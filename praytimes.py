@@ -366,8 +366,21 @@ prayTimes = PrayTimes()
 # sample code to run in standalone mode only
 
 if __name__ == "__main__":
-	from datetime import date
-	print('Prayer Times for today in Waterloo/Canada\n'+ ('='* 41))
-	times = prayTimes.getTimes(date.today(), (43, -80), -5);
-	for i in ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Midnight']:
-		print(i+ ': '+ times[i.lower()])
+    from datetime import date
+
+    if len(sys.argv) >= 4:
+        lat = float(sys.argv[1])
+        lon = float(sys.argv[2])
+        tz = int(sys.argv[3])
+        time = date.today()
+    else:
+        print("Usage: prayertimes.py <latitude> <longitude> <timezone> [time]")
+        sys.exit(1)
+
+    if not time:
+        time = date.today()
+
+    times = prayTimes.getTimes(time, (lat, lon), tz)
+
+    for i in ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Midnight']:
+        print(i+ ': '+ times[i.lower()])
